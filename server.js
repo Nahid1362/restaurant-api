@@ -31,13 +31,17 @@ db.initialize()
         console.log(err);
     });
 
+app.get('/', (req, res) => {
+    res.status(200).json({msg: 'API is working.'});
+});
+
 app.get('/api/restaurants/:id', (req, res) => {
     const id = req.params.id;
     db.getRestaurantById(id).then(restaurant => {
-        if(restaurant)
+        if (restaurant)
             res.status(200).json(restaurant);
         else
-            res.status(200).json({msg: 'Id not found'})
+            res.status(200).json({ msg: 'Id not found' })
     }).catch(error => {
         console.log('Id not foud');
         res.status(500).json({ error: 'Id not foud' });
@@ -49,7 +53,7 @@ app.get('/api/restaurants', (req, res) => {
     const page = req.query.page;
     const perPage = req.query.perPage;
     const borough = req.query.borough;
-    db.getAllRestaurants(page, perPage, borough).then( restaurants => {
+    db.getAllRestaurants(page, perPage, borough).then(restaurants => {
         res.status(200).json(restaurants);
     }).catch(err => {
         console.log('Invalid parameters');
@@ -62,7 +66,7 @@ app.post("/api/restaurants", (req, res) => {
     db.addNewRestaurant(req.body)
         .then((msg) => {
             console.log(msg);
-            res.status(201).json({message: msg});
+            res.status(201).json({ message: msg });
         })
         .catch((err) => {
             console.log(err);
@@ -76,7 +80,7 @@ app.put("/api/restaurants/:id", (req, res) => {
     db.updateRestaurantById(req.body, id)
         .then((msg) => {
             console.log(msg);
-            res.status(201).json({message: msg});
+            res.status(201).json({ message: msg });
         })
         .catch((err) => {
             console.log(err);
@@ -87,7 +91,7 @@ app.put("/api/restaurants/:id", (req, res) => {
 app.delete('/api/restaurants/:id', (req, res) => {
     const id = req.params.id;
     db.deleteRestaurantById(id).then((message) => {
-        res.status(204).json({msg: message });
+        res.status(204).json({ msg: message });
     }).catch(error => {
         res.status(500).json({ error: error.message });
     });
